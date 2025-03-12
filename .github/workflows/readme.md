@@ -4,7 +4,7 @@ This GitHub Action automatically builds and publishes FHIR Implementation Guides
 
 ## Features
 
-- Default branch is published in `https://<owner>.github.io/<repo>`. Branches are published in `https://<owner>.github.io/<repo>/branches/<branch>`
+- Default branch is published in `<pages-url>/<repo>`. Branches are published in `<pages-url>/<repo>/branches/<branch>`
 - Automatically uses the latest versions of sushi and IG publisher
 
 ## Prerequisites
@@ -13,7 +13,7 @@ Before you can use this GitHub Action, you need to ensure the following:
 
 - Your repository should have a branch called `gh-pages`.
 - You have configured GitHub Pages to serve from the `gh-pages` branch.
-- Write permissions are granted for workflows
+~~- Write permissions are granted for workflows~~
 - Your FHIR IG source files are properly set up in your repository.
 
 ## Setup

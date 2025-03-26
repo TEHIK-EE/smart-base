@@ -90,6 +90,12 @@ jobs:
       - name: Run the IG publisher
         uses: docker://hl7fhir/ig-publisher-base:latest
         with:
+          entrypoint: /bin/sh
+          args: -c "mkdir -p /var/lib/.fhir && chown $(id -u):$(id -g) /var/lib/.fhir"
+
+      - name: Run the IG publisher
+        uses: docker://hl7fhir/ig-publisher-base:latest
+        with:
           # Run the publisher - don't run the batch script but run the line directly
           args: java -Xmx6g -jar ./input-cache/publisher.jar publisher -ig . -repo https://github.com/${{github.repository}}/tree/${{github.ref_name}} -package-cache-folder ./fhir-package-cache
 
@@ -102,9 +108,8 @@ jobs:
           path: ./output/qa.json  # Adjust the path based on where qa.json is located
 
 
-      - name: Get branch names
-        id: branch-name
-        uses: tj-actions/branch-names@v7.0.7
+      - name: Get branch name
+        run: echo "BRANCH_NAME=${GITHUB_REF##*/}" >> $GITHUB_ENV
 
       - name: Deploy candidate
         uses: JamesIves/github-pages-deploy-action@v4.4.2
@@ -113,7 +118,7 @@ jobs:
           branch: gh-pages # The branch the action should deploy to.
           folder: ./output # The folder the action should deploy.
           commit-message: Deploy candidate branch
-          target-folder: branches/${{ steps.branch-name.outputs.current_branch }}
+          target-folder: branches/${{ env.BRANCH_NAME }}
           single-commit: true
           clean: false
 
